@@ -141,6 +141,7 @@ public class Main extends Application {
 
         final int[] playerCam = {0};
         final boolean[] dead = {false};
+        final double[] powerLvl = {100.0};
 
         //Creating the keypressed handler for checking if a key is pressed
         primaryStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -257,8 +258,15 @@ public class Main extends Application {
                         }
                     }
 
-                    //Call for rendering graphics
-                    GuiLoop(canvas, CamMap, RoomList, playerCam[0]);
+                    if (powerLvl[0] <= 0)
+                    {
+                        GuiLoopNoPower(canvas, playerCam[0]);
+                    }
+                    else
+                        {
+                            //Call for rendering graphics
+                            GuiLoop(canvas, CamMap, RoomList, playerCam[0]);
+                        }
 
                     //For loop for figuring out if an animatronic
                     //has done a jump scare or not
@@ -299,6 +307,20 @@ public class Main extends Application {
                             }
                         }
                     }
+
+                    if (RoomList.get(12).isVentClosed() == true && RoomList.get(13).isDoorClosed() == false)
+                    {
+                        powerLvl[0] -= 0.25;
+                    }
+                    else if (RoomList.get(12).isVentClosed() == false && RoomList.get(13).isDoorClosed() == true)
+                    {
+                        powerLvl[0] -= 0.5;
+                    }
+                    else if (RoomList.get(12).isVentClosed() == true && RoomList.get(13).isDoorClosed() == true)
+                    {
+                        powerLvl[0] -= 1.0;
+                    }
+
                     lastUpdate = now;
                 }
                 else if (dead[0])
@@ -307,7 +329,7 @@ public class Main extends Application {
                 }
 
             }
-        }.start();
+        }.start;
     }
 
 
